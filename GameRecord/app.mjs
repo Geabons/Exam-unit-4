@@ -128,3 +128,29 @@ document
     saveGameToStorage(storedGames);
     displayBoardGames();
   });
+
+  function sortArrayByField(array, fieldName) {
+    array.sort(function(a, b) {
+        if(a[fieldName]<b[fieldName])
+            return -1;
+        else
+            return 1;
+    });
+}
+
+document.getElementById("sortPlayers").addEventListener("click", function() {
+  sortArrayByField(storedGames, "players");
+  displayBoardGames();
+});
+document.getElementById("sortRating").addEventListener("click", function() {
+    sortArrayByField(storedGames, "personalRating");
+    displayBoardGames();
+  });
+  document.getElementById("sortDifficulty").addEventListener("click", function() {
+    sortArrayByField(storedGames, "difficulty");
+    displayBoardGames();
+  });
+  document.getElementById("sortPlayCount").addEventListener("click", function() {
+    sortArrayByField(storedGames, "playCount");
+    displayBoardGames();
+  });
