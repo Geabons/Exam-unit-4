@@ -1,7 +1,9 @@
 import game from "./models/Game.mjs";
 
-let storedGames = [];
+
 const gameKey = "gameEntries";
+let storedGames = retrieveGameFromStorage();
+displayBoardGames();
 
 function saveGameToStorage(gameObject) {
   localStorage.setItem(
@@ -11,7 +13,7 @@ function saveGameToStorage(gameObject) {
 }
 
 function loadGameFromStorage() {
-  return localStorage.getItem(gameKey);
+  return localStorage.getItem(gameKey)||[];
 }
 
 function retrieveGameFromStorage() {
@@ -88,3 +90,24 @@ function editor() {
     });
   }
 }
+
+document
+  .getElementById("addNewGameEntryButton")
+  .addEventListener("click", function () {
+    let gameEntry = new game(
+      document.getElementById("newGameTitle").value,
+      document.getElementById("newGameDesigner").value,
+      document.getElementById("newGameArtist").value,
+      document.getElementById("newGamePublisher").value,
+      document.getElementById("newGameYear").value,
+      document.getElementById("newGamePlayers").value,
+      document.getElementById("newGameTime").value,
+      document.getElementById("newGameDifficulty").value,
+      document.getElementById("newGameUrl").value,
+      document.getElementById("newGamePlayCount").value,
+      document.getElementById("newGamePersonalRating").value
+    );
+    storedGames.push(gameEntry);
+    saveGameToStorage(storedGames);
+    displayBoardGames();
+  });

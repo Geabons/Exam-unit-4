@@ -6,7 +6,27 @@
         <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-        <input type="file" id="importSource">
-		<div id="gameEntryDisplayElement"></div>
+		<div class="flex-container">
+			<div class="container">
+				<input type="file" id="importSource">
+				<div id="gameEntryDisplayElement"></div>
+			</div>
+			<div class="container">
+				<!-- START HTML FIELD TO CREATE NEW GAME ENTRY -->
+				 <div class="gameEntryField"><label>Title:</label><input id="newGameTitle" type="text" /></div>
+                 <div class="gameEntryField"><label>Designer:</label><input id="newGameDesigner" type="text" /></div>
+                 <div class="gameEntryField"><label>Artist:</label><input id="newGameArtist" type="text" /></div>
+                 <div class="gameEntryField"><label>Publisher:</label><input id="newGamePublisher" type="text" /></div>
+                 <div class="gameEntryField"><label>Year:</label><input id="newGameYear" type="text" /></div>
+                 <div class="gameEntryField"><label>Players:</label><input id="newGamePlayers" type="text" /></div>
+                 <div class="gameEntryField"><label>Time:</label><input id="newGameTime" type="text" /></div>
+                 <div class="gameEntryField"><label>Difficulty:</label><input id="newGameDifficulty" type="text" /></div>
+                 <div class="gameEntryField"><label>Url:</label><input id="newGameUrl" type="text" /></div>
+                 <div class="gameEntryField"><label>PlayCount:</label><input id="newGamePlayCount" type="text" /></div>
+                 <div class="gameEntryField"><label>PersonalRating:</label><input id="newGamePersonalRating" type="text" /></div>
+				<!-- END OF HTML FIELDS TO CREATE NEW GAME ENTRY -->
+				 <button class="btn btn-outline-primary" id="addNewGameEntryButton">Add</button>
+			</div>
+		</div>
 	</body>
 </html>
