@@ -1,10 +1,13 @@
 import game from "./models/Game.mjs";
 
 let storedGames = [];
-const gameKey = "";
+const gameKey = "gameEntries";
 
 function saveGameToStorage(gameObject) {
-  localStorage.setItem(gameKey, importJSONToString(gameObject));
+  localStorage.setItem(
+    gameKey,
+    typeof gameObject !== "string" ? importJSONToString(gameObject) : gameObject
+  );
 }
 
 function loadGameFromStorage() {
@@ -41,6 +44,7 @@ function displayBoardGames() {
       htmlBuffer += createGameEntry(i);
     }
     displayElement.innerHTML = htmlBuffer;
+    editor();
   } else {
     throw new Error("HTML Display Element does not exist...");
   }
@@ -55,10 +59,10 @@ function createGameEntry(index) {
     fieldName = FIELD_NAMES[i];
     fieldValue = ENTRY[fieldName];
     let fieldType = "text";
-    if(fieldName==="personalRating") {
+    if (fieldName === "personalRating") {
       fieldType = "range";
-    } else if(fieldName==="playCount") {
-      fieldType="number";
+    } else if (fieldName === "playCount") {
+      fieldType = "number";
     }
     res += createGameEntryField(index, fieldName, fieldValue, fieldType);
   }
@@ -67,4 +71,20 @@ function createGameEntry(index) {
 
 function createGameEntryField(index, fieldName, fieldValue, fieldType) {
   return `<div class="gameEntryField"><label>${fieldName}</label><input type="${fieldType}" value="${fieldValue}" data-fieldName="${fieldName}" data-index="${index}" /></div>`;
+}
+
+function editor() {
+  let listOfAllInputFields = document.querySelectorAll(
+    "#gameEntryDisplayElement input"
+  );
+  for (let i = 0; i < listOfAllInputFields.length; i++) {
+    let inputField = listOfAllInputFields[i];
+    inputField.addEventListener("input", function (e) {
+      let inputElement = e.target;
+      let fieldName = inputElement.getAttribute("data-fieldName");
+      let gameEntryIndex = inputElement.getAttribute("data-index");
+      storedGames[gameEntryIndex][fieldName] = inputElement.value;
+      saveGameToStorage(storedGames);
+    });
+  }
 }
