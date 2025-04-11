@@ -19,15 +19,52 @@ function importJSONToString(JSONString) {
   return JSON.stringify(JSONString);
 }
 
-document.getElementById("importSource").onchange = function (e) {
-  const file = e.target.files[0];
+document.getElementById("importSource").addEventListener("change", function () {
+  const file = this.files[0];
   let fileReader = new FileReader();
   fileReader.onload = function (event) {
-    saveGameToStorage(event.target.result);
-    //visualRecord
+    storedGames = JSON.parse(event.target.result);
+    saveGameToStorage(storedGames);
+    displayBoardGames();
   };
   fileReader.onerror = function (event) {
     console.error("Error with reading file: ", event.target.error);
   };
   fileReader.readAsText(file);
-};
+});
+
+function displayBoardGames() {
+  let displayElement = document.getElementById("gameEntryDisplayElement");
+  if (displayElement) {
+    let htmlBuffer = "";
+    for (let i = 0; i < storedGames.length; i++) {
+      htmlBuffer += createGameEntry(i);
+    }
+    displayElement.innerHTML = htmlBuffer;
+  } else {
+    throw new Error("HTML Display Element does not exist...");
+  }
+}
+
+function createGameEntry(index) {
+  const ENTRY = storedGames[index];
+  let fieldName, fieldValue;
+  const FIELD_NAMES = Object.keys(ENTRY);
+  let res = "";
+  for (let i = 0; i < FIELD_NAMES.length; i++) {
+    fieldName = FIELD_NAMES[i];
+    fieldValue = ENTRY[fieldName];
+    let fieldType = "text";
+    if(fieldName==="personalRating") {
+      fieldType = "range";
+    } else if(fieldName==="playCount") {
+      fieldType="number";
+    }
+    res += createGameEntryField(index, fieldName, fieldValue, fieldType);
+  }
+  return `<div class="gameEntry">${res}</div>`;
+}
+
+function createGameEntryField(index, fieldName, fieldValue, fieldType) {
+  return `<div class="gameEntryField"><label>${fieldName}</label><input type="${fieldType}" value="${fieldValue}" data-fieldName="${fieldName}" data-index="${index}" /></div>`;
+}
