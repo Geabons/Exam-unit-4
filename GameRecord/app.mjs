@@ -68,6 +68,7 @@ function createGameEntry(index) {
     }
     res += createGameEntryField(index, fieldName, fieldValue, fieldType);
   }
+  res += `<div class="gameEntryField"><button id="deleteButton" data-index="${index}">Delete</button></div>`;
   return `<div class="gameEntry">${res}</div>`;
 }
 
@@ -87,6 +88,22 @@ function editor() {
       let gameEntryIndex = inputElement.getAttribute("data-index");
       storedGames[gameEntryIndex][fieldName] = inputElement.value;
       saveGameToStorage(storedGames);
+    });
+  }
+  let listOfDeleteButtons = document.querySelectorAll("#gameEntryDisplayElement button#deleteButton");
+  for(let i=0; i<listOfDeleteButtons.length; i++) {
+    let deleteButton = listOfDeleteButtons[i];
+    deleteButton.addEventListener("click", function(e) {
+      let gameEntryIndex = e.target.getAttribute("data-index");
+      let temporaryGameEntryList = [];
+      for(let j=0; j<storedGames.length; j++) {
+        if(j!=gameEntryIndex) {
+          temporaryGameEntryList.push(storedGames[j]);
+        }
+      }
+      storedGames = temporaryGameEntryList;
+      saveGameToStorage(storedGames);
+      displayBoardGames();
     });
   }
 }
